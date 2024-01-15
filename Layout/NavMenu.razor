@@ -1,4 +1,9 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Todo_Blazor.Services.List
+@using Todo_Blazor.Services.List.ViewModel
+@using Todo_Blazor.ViewModel
+@inject ListService service
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Todo_Blazor</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -25,12 +30,31 @@
             </NavLink>
         </div>
     </nav>
+    @if (data?.List != null)
+    {
+        <nav class="flex-column">
+            @foreach (var item in data.List)
+        {
+                var path = $"/tasks/{item.Id}";
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="@path">@item.Title</NavLink>
+                </div>
+        }
+        </nav>
+    }
 </div>
 
 @code {
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private GetListResult data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await service.GetAsync();
+    }
 
     private void ToggleNavMenu()
     {
