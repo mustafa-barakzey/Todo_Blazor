@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Net.Http.Headers;
 using Todo_Blazor;
 using Todo_Blazor.Services.List;
+using Todo_Blazor.Services.TaskList;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -10,6 +11,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 // inject services
 builder.Services.AddScoped<ListService>();
+builder.Services.AddScoped<TaskListService>();
 
 builder.Services.AddScoped(sp =>
 {
