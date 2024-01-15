@@ -5,6 +5,11 @@
 <PageTitle>@title</PageTitle>
 
 <div>
+    <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Add Task" @bind="@TaskTitle">
+            <button class="input-group-text" @onclick="@AddTask">Add</button>
+    </div>
+
     @if (Result?.Tasks != null)
     {
         <div>
@@ -14,7 +19,7 @@
                     <div class="input-group-text">
                         <input class="form-check-input mt-0" type="radio" value="">
                     </div>
-                    <span type="text" class="form-control">@item.Title</span>
+                    <span type="text" class="form-control" >@item.Title</span>
                 </div>
             }
         </div>
@@ -25,10 +30,21 @@
     string title="page title";
     [Parameter]
     public long ListId { get; set; }
+    public string TaskTitle { get; set; }
     public GetTaskResult Result { get; set; } = new();
 
     protected override async Task OnParametersSetAsync()
     {
         Result = await service.GetTasksAsync(ListId);
+    }
+
+    private async Task AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(TaskTitle))
+        {
+            await service.AddTaskAsync(ListId, TaskTitle);    
+            Result = await service.GetTasksAsync(ListId);
+            TaskTitle = string.Empty;
+        }
     }
 }
