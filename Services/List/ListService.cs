@@ -1,24 +1,15 @@
-﻿using System.Net.Http.Json;
-using Todo_Blazor.Services.List.ViewModel;
-using Todo_Blazor.ViewModel;
+﻿using Todo_Blazor.Services.List.ViewModel;
+using Todo_Blazor.Services.Shared;
 
 namespace Todo_Blazor.Services.List
 {
-    public class ListService
+    public class ListService : BaseService
     {
-        private readonly HttpClient _httpClient;
 
-        public ListService(HttpClient httpClient)
+        public ListService(HttpClient httpClient) : base(httpClient, "List")
         {
-            _httpClient = httpClient;
         }
 
-        public async Task<GetListResult> GetAsync()
-        {
-            var result= await _httpClient.GetFromJsonAsync<OperationResult<GetListResult>>("List/Get");
-
-
-            return result?.Data ?? new();
-        }
+        public async Task<GetListResult> GetAsync() => await Get<GetListResult>();
     }
 }

@@ -42,7 +42,7 @@
     {
         if (!string.IsNullOrWhiteSpace(TaskTitle))
         {
-            await service.AddTaskAsync(ListId, TaskTitle);    
+            await service.AddTaskAsync(new(ListId, TaskTitle));
             Result = await service.GetTasksAsync(ListId);
             TaskTitle = string.Empty;
         }
